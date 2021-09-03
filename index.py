@@ -10,9 +10,9 @@ import schedule
 
 # as documented here: http://data.gdeltproject.org/documentation/GDELT-Event_Codebook-V2.0.pdf
 with open("DATASET_COLUMNS.txt", "r") as f:
-    gdelt_events_database_columns_str = f.read()
+    gdelt_events_dataset_columns_str = f.read()
 
-GDELT_EVENTS_DATABASE_COLUMNS = gdelt_events_database_columns_str.split("\n")
+GDELT_EVENTS_DATASET_COLUMNS = gdelt_events_dataset_columns_str.split("\n")
 
 
 class GDELTEvents:
@@ -83,7 +83,7 @@ class GDELTEvents:
     def increment_and_convert_to_parquet(self) -> None:
         new_csv = pd.read_csv(
             f"{self.input_path}/{self.download_file_name}", header=None, sep="\t")
-        new_csv.columns = GDELT_EVENTS_DATABASE_COLUMNS
+        new_csv.columns = GDELT_EVENTS_DATASET_COLUMNS
 
         if not os.path.exists(f'{self.output_path}/output.parquet'):
             lines = 0
