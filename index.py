@@ -102,7 +102,7 @@ class GDELTEvents:
     def run(self):
         print(datetime.now())
         try:
-            new_release, zip_file_url = gdelt.check_new_release()
+            new_release, zip_file_url = self.check_new_release()
             if new_release:
                 self.download_csv(zip_file_url)
                 print("Downloaded:", self.download_file_name)
