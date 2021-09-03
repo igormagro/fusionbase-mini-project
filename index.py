@@ -9,7 +9,7 @@ import schedule
 
 
 # as documented here: http://data.gdeltproject.org/documentation/GDELT-Event_Codebook-V2.0.pdf
-with open("DATABASE_COLUMNS.txt", "r") as f:
+with open("DATASET_COLUMNS.txt", "r") as f:
     gdelt_events_database_columns_str = f.read()
 
 GDELT_EVENTS_DATABASE_COLUMNS = gdelt_events_database_columns_str.split("\n")
