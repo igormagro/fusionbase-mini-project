@@ -130,7 +130,7 @@ if __name__ == "__main__":
         "./logs/execution_log.txt",
         "./logs/error_log.txt"
     )
-    schedule.every(15).minute.do(gdelt.run)
+    schedule.every(15).minutes.do(gdelt.run)
     gdelt.run()
 
     while True:
