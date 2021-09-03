@@ -54,7 +54,7 @@ class GDELTEvents:
         with open(self.exec_logs_path, "r") as file:
             for last_line in file:
                 pass
-       
+
         last_downloaded_file_id = last_line.split("\t")[0]
 
         self.last_downloaded_file_id = last_downloaded_file_id
@@ -62,32 +62,22 @@ class GDELTEvents:
 
     def check_new_release(self) -> Tuple[bool, str]:
         self.get_last_downloaded_file()
-        try:
-            res = requests.get(self.gdelt_updates_url)
-            res.raise_for_status()
-        except Exception as e:
-            self.write_to_error_log(e)
-            raise Exception(e)
-        else:
-            events_dataset_info = res.text.split("\n")[0]
-            self.available_file_id = events_dataset_info.split(" ")[1]
-            events_dataset_url = events_dataset_info.split(" ")[-1]
+        res = requests.get(self.gdelt_updates_url)
+        res.raise_for_status()
+        events_dataset_info = res.text.split("\n")[0]
+        self.available_file_id = events_dataset_info.split(" ")[1]
+        events_dataset_url = events_dataset_info.split(" ")[-1]
 
         return (self.available_file_id != self.last_downloaded_file_id, events_dataset_url)
 
     def download_csv(self, url) -> None:
         zip_file_name = url.split("/")[-1]
         self.download_file_name = zip_file_name.replace(".zip", "")
-        try:
-            res = requests.get(url)
-            res.raise_for_status()
-        except Exception as e:
-            self.write_to_error_log(e)
-            raise Exception(e)
-        else:
-            zip = zipfile.ZipFile(io.BytesIO(res.content))
-            zip.extractall(self.input_path)
-            self.write_to_execution_log()
+        res = requests.get(url)
+        res.raise_for_status()
+        zip = zipfile.ZipFile(io.BytesIO(res.content))
+        zip.extractall(self.input_path)
+        self.write_to_execution_log()
         return
 
     def increment_and_convert_to_parquet(self) -> None:
@@ -120,6 +110,7 @@ class GDELTEvents:
             else:
                 print("Dataset not updated yet.")
         except Exception as e:
+            self.write_to_error_log(e)
             print("ERROR:", e)
 
 
